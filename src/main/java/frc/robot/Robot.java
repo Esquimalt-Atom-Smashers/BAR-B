@@ -12,7 +12,7 @@ package frc.robot;
  * 2) Install Java JDK 17 https://code.visualstudio.com/docs/java/java-project#:~:text=If%20you%20want%20to%20download,Code%20with%20new%20Java%20versions
  * 3) Update the gradle file if necessary to use JDK 17
  * 4) Install the following WPILib online 3rd party libraries according to https://docs.wpilib.org/en/stable/docs/software/vscode-overview/3rd-party-libraries.html
- * 5) Phoenix (Pro and v5): https://maven.ctr-electronics.com/release/com/ctre/phoenixpro/PhoenixProAnd5-frc2023-latest.json
+ * 5) Phoenix (v6): https://maven.ctr-electronics.com/release/com/ctre/phoenix6/latest/Phoenix6-frc2024-beta-latest.json and v5 https://maven.ctr-electronics.com/release/com/ctre/phoenix/Phoenix5-frc2024-beta-latest.json
  * 6) Kauai Labs - Libraries for NavX-MXP, NavX-Micro, and Sensor Fusion https://dev.studica.com/releases/2023/NavX.json
  * 7) REV Robotics REVLib - Library for all REV devices including SPARK MAX and Color Sensor V3 https://software-metadata.revrobotics.com/REVLib-2023.json
  * 8) PhotonVision - Library for PhotonVision CV software https://maven.photonvision.org/repository/internal/org/photonvision/PhotonLib-json/1.0/PhotonLib-json-1.0.json
