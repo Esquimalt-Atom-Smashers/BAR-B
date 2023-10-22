@@ -6,7 +6,6 @@ package frc.robot;
 
 /**
  * This code was adapted from https://github.com/FRC2539/javabot-2023/
- * 
  * In order for this project to run, you need to do the following: 
  * 0) Create your project using the WPILib Project Creator or clone the enitre repository
  * 1) Install the Extension Pack for Java https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack
