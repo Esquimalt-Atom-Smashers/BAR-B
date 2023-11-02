@@ -51,9 +51,9 @@ public final class Constants {
   }
 
   public static final class ControllerConstants {
-      public static final int LEFT_DRIVE_CONTROLLER = 0;
-      public static final int RIGHT_DRIVE_CONTROLLER = 1;
-      public static final int OPERATOR_CONTROLLER = 2;
+      public static final int DRIVE_CONTROLLER = 0;
+      //public static final int RIGHT_DRIVE_CONTROLLER = 1;
+      public static final int OPERATOR_CONTROLLER = 1;
   }
 
   public static final class FieldConstants {
@@ -411,18 +411,18 @@ public final class Constants {
       public static final double lengthWithBumpers = Units.inchesToMeters(32 + 3.25 * 2);
       public static final double widthWithBumpers = Units.inchesToMeters(27.5 + 3.25 * 2);
 
-      public static final double trackWidth = Units.inchesToMeters(19.5);
-      public static final double wheelBase = Units.inchesToMeters(19.5);
+      public static final double trackWidth = Units.inchesToMeters(21.5);
+      public static final double wheelBase = Units.inchesToMeters(26.75);
       public static final double wheelDiameter = Units.inchesToMeters(4.0);
       public static final double wheelCircumference = wheelDiameter * Math.PI;
 
-      public static final double robotMass = Units.lbsToKilograms(115);
+      public static final double robotMass = Units.lbsToKilograms(45);
 
       public static final double openLoopRamp = 0.0; // 0.25
       public static final double closedLoopRamp = 0.0;
 
-      public static final double driveGearRatio = (5.14 / 1.0); // 5.14:1
-      public static final double angleGearRatio = (12.8 / 1.0); // 12.8:1
+      public static final double driveGearRatio = (6.75 / 1.0); // 5.14:1
+      public static final double angleGearRatio = (150/7 / 1.0); // 12.8:1
 
       public static final Translation2d[] moduleTranslations = new Translation2d[] {
           new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
@@ -513,9 +513,9 @@ public final class Constants {
 
       /* Front Left Module - Module 0 */
       public static final class Mod0 {
-          public static final int driveMotorID = 0;
-          public static final int angleMotorID = 4;
-          public static final int canCoderID = 24;
+          public static final int driveMotorID = 1;
+          public static final int angleMotorID = 0;
+          public static final int canCoderID = 0;
           public static final double angleOffset = 132; 
           //public static final String canivoreName = "CANivore";
           public static final SwerveModuleConstants constants =
@@ -525,9 +525,9 @@ public final class Constants {
       /* Front Right Module - Module 1 */
       public static final class Mod1 {
 
-          public static final int driveMotorID = 2;
-          public static final int angleMotorID = 6;
-          public static final int canCoderID = 26;
+          public static final int driveMotorID = 5;
+          public static final int angleMotorID = 4;
+          public static final int canCoderID = 2;
           public static final double angleOffset = 87.4;
           //public static final String canivoreName = "CANivore";
           public static final SwerveModuleConstants constants =
@@ -536,9 +536,9 @@ public final class Constants {
 
       /* Back Left Module - Module 2 */
       public static final class Mod2 {
-          public static final int driveMotorID = 1;
-          public static final int angleMotorID = 5;
-          public static final int canCoderID = 25;
+          public static final int driveMotorID = 3;
+          public static final int angleMotorID = 2;
+          public static final int canCoderID = 1;
           public static final double angleOffset = 89.4;
           //public static final String canivoreName = "CANivore";
           public static final SwerveModuleConstants constants =
@@ -547,9 +547,9 @@ public final class Constants {
 
       /* Back Right Module - Module 3 */
       public static final class Mod3 {
-          public static final int driveMotorID = 3;
-          public static final int angleMotorID = 7;
-          public static final int canCoderID = 27;
+          public static final int driveMotorID = 7;
+          public static final int angleMotorID = 6;
+          public static final int canCoderID = 3;
           public static final double angleOffset = 308.7;
           //public static final String canivoreName = "CANivore";
           public static final SwerveModuleConstants constants =

@@ -4,9 +4,10 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.SerialPort;
 
 public class NavXGyro {
-    private AHRS navX = new AHRS();
+    private AHRS navX = new AHRS(SerialPort.Port.kUSB);
 
     public NavXGyro() {}
 

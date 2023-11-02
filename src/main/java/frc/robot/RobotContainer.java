@@ -40,10 +40,10 @@ import java.util.function.Supplier;
  */
 public class RobotContainer {
 
-  private final LogitechController leftDriveController =
-  new LogitechController(ControllerConstants.LEFT_DRIVE_CONTROLLER);
-private final LogitechController rightDriveController =
-  new LogitechController(ControllerConstants.RIGHT_DRIVE_CONTROLLER);
+  private final LogitechController driveController =
+  new LogitechController(ControllerConstants.DRIVE_CONTROLLER);
+//private final LogitechController rightDriveController =
+//  new LogitechController(ControllerConstants.RIGHT_DRIVE_CONTROLLER);
 private final LogitechController operatorController =
   new LogitechController(ControllerConstants.OPERATOR_CONTROLLER);
 
@@ -97,7 +97,7 @@ swerveDriveSubsystem.setDefaultCommand(swerveDriveSubsystem.driveCommand(
 //               .withTimeout(1.5));
 
 /* Set left joystick bindings */
-leftDriveController.getDPadLeft().onTrue(runOnce(swerveDriveSubsystem::zeroRotation, swerveDriveSubsystem));
+driveController.getDPadLeft().onTrue(runOnce(swerveDriveSubsystem::zeroRotation, swerveDriveSubsystem));
 //leftDriveController.getLeftTopRight().whileTrue(visionSubsystem.resetPoseWithApriltag());
 //leftDriveController.nameLeftTopLeft("Reset Gyro Angle");
 //leftDriveController.nameLeftTopRight("Reset Pose w/ AprilTag");
@@ -168,19 +168,19 @@ leftDriveController.getDPadLeft().onTrue(runOnce(swerveDriveSubsystem::zeroRotat
 //rightDriveController.nameBottomThumb("Shoot");
 
 // Cardinal drive commands (inverted since the arm is on the back of the robot)
-rightDriveController
+driveController
       .getDPadUp()
       .whileTrue(swerveDriveSubsystem.cardinalCommand(
               Rotation2d.fromDegrees(180), this::getDriveForwardAxis, this::getDriveStrafeAxis));
-rightDriveController
+driveController
       .getDPadRight()
       .whileTrue(swerveDriveSubsystem.cardinalCommand(
               Rotation2d.fromDegrees(90), this::getDriveForwardAxis, this::getDriveStrafeAxis));
-rightDriveController
+driveController
       .getDPadDown()
       .whileTrue(swerveDriveSubsystem.cardinalCommand(
               Rotation2d.fromDegrees(0), this::getDriveForwardAxis, this::getDriveStrafeAxis));
-rightDriveController
+driveController
       .getDPadLeft()
       .whileTrue(swerveDriveSubsystem.cardinalCommand(
               Rotation2d.fromDegrees(-90), this::getDriveForwardAxis, this::getDriveStrafeAxis));
@@ -288,8 +288,8 @@ operatorController.nameStart("Rainbow Mode");
 operatorController.nameRightBumper("Shift Button");
 
 // Send all button names to network tables
-rightDriveController.sendButtonNamesToNT();
-leftDriveController.sendButtonNamesToNT();
+//rightDriveController.sendButtonNamesToNT();
+driveController.sendButtonNamesToNT();
 operatorController.sendButtonNamesToNT();
 }
 
@@ -299,16 +299,16 @@ return autonomousManager.getAutonomousCommand();
 
 public double getDriveForwardAxis() {
 return -forwardRateLimiter.calculate(
-      square(deadband(leftDriveController.getRightYAxis().getRaw(), 0.05)) * Constants.SwerveConstants.maxSpeed);
+      square(deadband(driveController.getRightYAxis().getRaw(), 0.05)) * Constants.SwerveConstants.maxSpeed);
 }
 
 public double getDriveStrafeAxis() {
 return -strafeRateLimiter.calculate(
-      square(deadband(leftDriveController.getRightXAxis().getRaw(), 0.05)) * Constants.SwerveConstants.maxSpeed);
+      square(deadband(driveController.getRightXAxis().getRaw(), 0.05)) * Constants.SwerveConstants.maxSpeed);
 }
 
 public double getDriveRotationAxis() {
-return -square(deadband(rightDriveController.getRightXAxis().getRaw(), 0.05))
+return -square(deadband(driveController.getLeftXAxis().getRaw(), 0.05))
       * Constants.SwerveConstants.maxAngularVelocity
       * 0.75;
 }
