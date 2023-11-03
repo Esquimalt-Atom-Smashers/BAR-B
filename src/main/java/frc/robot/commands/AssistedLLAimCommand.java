@@ -13,7 +13,7 @@ import frc.lib.logging.Logger;
 import frc.lib.math.MathUtils;
 import frc.lib.vision.BackLimelight;
 import frc.lib.vision.LimelightRawAngles;
-import frc.robot.subsystems.LightsSubsystem;
+// import frc.robot.subsystems.LightsSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import java.util.function.BooleanSupplier;
@@ -52,7 +52,7 @@ public class AssistedLLAimCommand extends CommandBase {
     public AssistedLLAimCommand(
             SwerveDriveSubsystem swerveDriveSubsystem,
             VisionSubsystem visionSubsystem,
-            LightsSubsystem lightsSubsystem,
+            // LightsSubsystem lightsSubsystem,
             DoubleSupplier forward,
             DoubleSupplier strafe,
             DoubleSupplier rotate,
@@ -61,7 +61,7 @@ public class AssistedLLAimCommand extends CommandBase {
         this.swerveDriveSubsystem = swerveDriveSubsystem;
         //this.visionSubsystem = visionSubsystem;
 
-        addRequirements(swerveDriveSubsystem, visionSubsystem, lightsSubsystem);
+        // addRequirements(swerveDriveSubsystem, visionSubsystem, lightsSubsystem);
 
         this.forward = forward;
         this.strafe = strafe;
@@ -130,9 +130,9 @@ public class AssistedLLAimCommand extends CommandBase {
                 if (strafeController.atSetpoint()) strafeingValue = 0;
                 
                 if (Math.abs(strafeController.getPositionError()) <= 2.0) {
-                    LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.green);
+                    // LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.green);
                 } else {
-                    LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.yellow);
+                    // LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.yellow);
                 }
 
                 hasSeenGoal = true;
@@ -141,7 +141,7 @@ public class AssistedLLAimCommand extends CommandBase {
         } else if (!hasSeenGoal) {
             strafeingValue = strafe.getAsDouble();
             strafeSlewer.reset(strafeingValue);
-            LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.blue);
+            // LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.blue);
         }
 
         double angularCorrection = angleController.calculate(

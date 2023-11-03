@@ -3,8 +3,8 @@ package frc.robot.commands;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.lib.vision.BackLimelight;
-import frc.robot.subsystems.LightsSubsystem;
-import frc.robot.subsystems.LightsSubsystem.LEDSegment;
+// import frc.robot.subsystems.LightsSubsystem;
+// import frc.robot.subsystems.LightsSubsystem.LEDSegment;
 import frc.robot.subsystems.VisionSubsystem;
 
 
@@ -19,10 +19,10 @@ public class IndicateSubstationAimedCommand extends CommandBase {
     private final double angleThreshold = 6.0;
     private final double areaThreshold = 0.05;
 
-    public IndicateSubstationAimedCommand(VisionSubsystem visionSubsystem, LightsSubsystem lightsSubsystem) {
+    public IndicateSubstationAimedCommand(VisionSubsystem visionSubsystem /*LightsSubsystem lightsSubsystem*/) {
         this.visionSubsystem = visionSubsystem;
 
-        addRequirements(visionSubsystem, lightsSubsystem);
+        // addRequirements(visionSubsystem, lightsSubsystem);
     }
 
     @Override
@@ -49,12 +49,12 @@ public class IndicateSubstationAimedCommand extends CommandBase {
             double ta = retroreflectiveAngles.ta();
 
             if (Math.abs(tx) <= angleThreshold && ta >= areaThreshold) {
-                LEDSegment.MainStrip.setColor(LightsSubsystem.green);
+                // LEDSegment.MainStrip.setColor(LightsSubsystem.green);
             } else {
-                LEDSegment.MainStrip.setStrobeAnimation(LightsSubsystem.yellow, 0.3);
+                // LEDSegment.MainStrip.setStrobeAnimation(LightsSubsystem.yellow, 0.3);
             }
         } else {
-            LEDSegment.MainStrip.setStrobeAnimation(LightsSubsystem.yellow, 0.3);
+            // LEDSegment.MainStrip.setStrobeAnimation(LightsSubsystem.yellow, 0.3);
         }
     }
 

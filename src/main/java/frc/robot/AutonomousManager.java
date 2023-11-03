@@ -22,7 +22,7 @@ import frc.lib.logging.Logger;
 //import frc.robot.subsystems.ArmSubsystem.ArmState;
 //import frc.robot.subsystems.GripperSubsystem;
 //import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LightsSubsystem;
+// import frc.robot.subsystems.LightsSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +47,7 @@ public class AutonomousManager {
     private List<PathPlannerTrajectory> chosenAuto = defaultAuto.getPath();
 
     SwerveDriveSubsystem swerveDriveSubsystem;
-    LightsSubsystem lightsSubsystem;
+//     LightsSubsystem lightsSubsystem;
 
     private boolean hasInitialized = false;
 
@@ -56,7 +56,7 @@ public class AutonomousManager {
         //ArmSubsystem armSubsystem = container.getArmSubsystem();
         //GripperSubsystem gripperSubsystem = container.getGripperSubsystem();
         //IntakeSubsystem intakeSubsystem = container.getIntakeSubsystem();
-        lightsSubsystem = container.getLightsSubsystem();
+        // lightsSubsystem = container.getLightsSubsystem();
 
         // Create an event map for use in all autos
         HashMap<String, Command> eventMap = new HashMap<>();

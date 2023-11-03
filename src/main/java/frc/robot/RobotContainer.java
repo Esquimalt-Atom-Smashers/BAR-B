@@ -53,7 +53,7 @@ public static SlewRateLimiter forwardRateLimiter = new SlewRateLimiter(40, -40, 
 public static SlewRateLimiter strafeRateLimiter = new SlewRateLimiter(40, -40, 0);
 
 private final SwerveDriveSubsystem swerveDriveSubsystem = new SwerveDriveSubsystem();
-private final LightsSubsystem lightsSubsystem = new LightsSubsystem();
+// private final LightsSubsystem lightsSubsystem = new LightsSubsystem();
 //private final GripperSubsystem gripperSubsystem = new GripperSubsystem();
 //private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 private final VisionSubsystem visionSubsystem = new VisionSubsystem(swerveDriveSubsystem);
@@ -264,22 +264,22 @@ operatorController.nameB("Other Slide Pickup");
 
 // operatorController.nameLeftBumper("Handoff Button");
 
-operatorController
-      .getRightTrigger()
-      .whileTrue(run(
-              () -> LightsSubsystem.LEDSegment.MainStrip.setStrobeAnimation(LightsSubsystem.yellow, .3),
-              lightsSubsystem));
-operatorController
-      .getLeftTrigger()
-      .whileTrue(run(
-              () -> LightsSubsystem.LEDSegment.MainStrip.setStrobeAnimation(LightsSubsystem.purple, .3),
-              lightsSubsystem));
-operatorController.nameRightTrigger("Indicate Cone");
-operatorController.nameLeftTrigger("Indicate Cube");
+// operatorController
+//       .getRightTrigger()
+//       .whileTrue(run(
+//               () -> LightsSubsystem.LEDSegment.MainStrip.setStrobeAnimation(LightsSubsystem.yellow, .3),
+//               lightsSubsystem));
+// operatorController
+//       .getLeftTrigger()
+//       .whileTrue(run(
+//               () -> LightsSubsystem.LEDSegment.MainStrip.setStrobeAnimation(LightsSubsystem.purple, .3),
+//               lightsSubsystem));
+// operatorController.nameRightTrigger("Indicate Cone");
+// operatorController.nameLeftTrigger("Indicate Cube");
 
-operatorController
-      .getStart()
-      .toggleOnTrue(run(() -> LightsSubsystem.LEDSegment.MainStrip.setRainbowAnimation(1), lightsSubsystem));
+// operatorController
+//       .getStart()
+//       .toggleOnTrue(run(() -> LightsSubsystem.LEDSegment.MainStrip.setRainbowAnimation(1), lightsSubsystem));
 operatorController.nameStart("Rainbow Mode");
 
 // operatorController.getBack().whileTrue(intakeSubsystem.reverseIntakeModeCommand());
@@ -353,9 +353,9 @@ public SwerveDriveSubsystem getSwerveDriveSubsystem() {
 return swerveDriveSubsystem;
 }
 
-public LightsSubsystem getLightsSubsystem() {
-return lightsSubsystem;
-}
+// public LightsSubsystem getLightsSubsystem() {
+//       return lightsSubsystem;
+// }
 
 // public GripperSubsystem getGripperSubsystem() {
 // return gripperSubsystem;

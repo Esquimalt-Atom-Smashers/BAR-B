@@ -215,7 +215,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
                     if (sketchyBoi.thing > 0) {
                         myFavoriteTimer.start();
                         lock();
-                        LightsSubsystem.LEDSegment.MainStrip.setRainbowAnimation(1);
+                        // LightsSubsystem.LEDSegment.MainStrip.setRainbowAnimation(1);
                     } else {
                         setVelocity(velocity, false);
                         myFavoriteTimer.stop();

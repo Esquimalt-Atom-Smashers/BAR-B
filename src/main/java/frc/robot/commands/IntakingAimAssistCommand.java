@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.lib.math.MathUtils;
 import frc.lib.vision.LimelightRawAngles;
 //import frc.robot.Constants.VisionConstants;
-import frc.robot.subsystems.LightsSubsystem;
+// import frc.robot.subsystems.LightsSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import java.util.function.DoubleSupplier;
@@ -47,14 +47,14 @@ public class IntakingAimAssistCommand extends CommandBase {
     public IntakingAimAssistCommand(
             VisionSubsystem visionSubsystem,
             SwerveDriveSubsystem swerveDriveSubsystem,
-            LightsSubsystem lightsSubsystem,
+            // LightsSubsystem lightsSubsystem,
             DoubleSupplier forward,
             DoubleSupplier strafe,
             DoubleSupplier rotate) {
         this.visionSubsystem = visionSubsystem;
         this.swerveDriveSubsystem = swerveDriveSubsystem;
 
-        addRequirements(visionSubsystem, swerveDriveSubsystem, lightsSubsystem);
+        // addRequirements(visionSubsystem, swerveDriveSubsystem, lightsSubsystem);
 
         this.forward = forward;
         this.strafe = strafe;
@@ -75,7 +75,7 @@ public class IntakingAimAssistCommand extends CommandBase {
     @Override
     public void execute() {
         if (visionSubsystem.getFrontLimelight().hasMLRawAngles()) {
-            LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.green);
+            // LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.green);
             LimelightRawAngles newRawAngles = visionSubsystem.getFrontLimelight().getMLRawAngles().get();
             if (MathUtils.equalsWithinError(lastSeenLLAngles.tx(), newRawAngles.tx(), 3)
                     // && MathUtils.equalsWithinError(lastSeenLLAngles.ty(), newRawAngles.ty(), 3)

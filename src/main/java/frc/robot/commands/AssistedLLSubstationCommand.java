@@ -15,7 +15,7 @@ import frc.lib.logging.Logger;
 import frc.lib.math.MathUtils;
 import frc.lib.vision.BackLimelight;
 import frc.lib.vision.LimelightRawAngles;
-import frc.robot.subsystems.LightsSubsystem;
+// import frc.robot.subsystems.LightsSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
 import java.util.function.BooleanSupplier;
@@ -54,7 +54,7 @@ public class AssistedLLSubstationCommand extends CommandBase {
     public AssistedLLSubstationCommand(
             SwerveDriveSubsystem swerveDriveSubsystem,
             VisionSubsystem visionSubsystem,
-            LightsSubsystem lightsSubsystem,
+            // LightsSubsystem lightsSubsystem,
             DoubleSupplier forward,
             DoubleSupplier strafe,
             DoubleSupplier rotate,
@@ -63,7 +63,7 @@ public class AssistedLLSubstationCommand extends CommandBase {
         this.swerveDriveSubsystem = swerveDriveSubsystem;
         //this.visionSubsystem = visionSubsystem;
 
-        addRequirements(swerveDriveSubsystem, visionSubsystem, lightsSubsystem);
+        // addRequirements(swerveDriveSubsystem, visionSubsystem, lightsSubsystem);
 
         this.forward = forward;
         this.strafe = strafe;
@@ -132,9 +132,9 @@ public class AssistedLLSubstationCommand extends CommandBase {
                 if (forwardController.atSetpoint()) forwardValue = 0;
                 
                 if (Math.abs(forwardController.getPositionError()) <= 2.0) {
-                    LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.green);
+                    // LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.green);
                 } else {
-                    LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.yellow);
+                    // LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.yellow);
                 }
 
                 hasSeenGoal = true;
@@ -143,7 +143,7 @@ public class AssistedLLSubstationCommand extends CommandBase {
         } else if (!hasSeenGoal) {
             forwardValue = forward.getAsDouble();
             forwardSlewer.reset(forwardValue);
-            LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.blue);
+            // LightsSubsystem.LEDSegment.MainStrip.setColor(LightsSubsystem.blue);
         }
 
         double angularCorrection = angleController.calculate(
