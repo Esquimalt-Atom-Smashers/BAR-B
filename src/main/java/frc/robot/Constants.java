@@ -516,7 +516,7 @@ public final class Constants {
           public static final int driveMotorID = 1;
           public static final int angleMotorID = 0;
           public static final int canCoderID = 0;
-          public static final double angleOffset = 132; 
+          public static final double angleOffset = .1582*360; 
           //public static final String canivoreName = "CANivore";
           public static final SwerveModuleConstants constants =
                   new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
@@ -528,7 +528,7 @@ public final class Constants {
           public static final int driveMotorID = 5;
           public static final int angleMotorID = 4;
           public static final int canCoderID = 2;
-          public static final double angleOffset = 87.4;
+          public static final double angleOffset = .9797*360;
           //public static final String canivoreName = "CANivore";
           public static final SwerveModuleConstants constants =
                   new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
@@ -539,7 +539,7 @@ public final class Constants {
           public static final int driveMotorID = 3;
           public static final int angleMotorID = 2;
           public static final int canCoderID = 1;
-          public static final double angleOffset = 89.4;
+          public static final double angleOffset = .6382*360;
           //public static final String canivoreName = "CANivore";
           public static final SwerveModuleConstants constants =
                   new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
@@ -550,7 +550,7 @@ public final class Constants {
           public static final int driveMotorID = 7;
           public static final int angleMotorID = 6;
           public static final int canCoderID = 3;
-          public static final double angleOffset = 308.7;
+          public static final double angleOffset = .667*360;
           //public static final String canivoreName = "CANivore";
           public static final SwerveModuleConstants constants =
                   new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
