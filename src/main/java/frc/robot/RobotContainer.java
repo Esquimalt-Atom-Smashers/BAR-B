@@ -69,13 +69,13 @@ configureBindings();
 
 private void configureBindings() {
 // Decrease the max drivetrain speed when the arm is extended
-swerveDriveSubsystem.setCustomMaxSpeedSupplier(() -> {
-  // if (armSubsystem.getState() != ArmState.AWAITING_DEPLOYMENT) return 5;
-  // else if (armSubsystem.getState() == ArmState.AWAITING_DEPLOYMENT
-  //         && !armSubsystem.isArmApproximatelyAtGoal()) return 5;
-  // else return Constants.SwerveConstants.maxSpeed;
-  return Constants.SwerveConstants.maxSpeed;
-});
+// swerveDriveSubsystem.setCustomMaxSpeedSupplier(() -> {
+//   // if (armSubsystem.getState() != ArmState.AWAITING_DEPLOYMENT) return 5;
+//   // else if (armSubsystem.getState() == ArmState.AWAITING_DEPLOYMENT
+//   //         && !armSubsystem.isArmApproximatelyAtGoal()) return 5;
+//   // else return Constants.SwerveConstants.maxSpeed;
+//   return Constants.SwerveConstants.maxSpeed;
+// });
 
 /* Set default commands */
 swerveDriveSubsystem.setDefaultCommand(swerveDriveSubsystem.driveCommand(
@@ -297,18 +297,26 @@ public Command getAutonomousCommand() {
 return autonomousManager.getAutonomousCommand();
 }
 
+// public double getDriveForwardAxis() {
+// return -forwardRateLimiter.calculate(
+//       square(deadband(driveController.getLeftYAxis().getRaw(), 0.05)) * Constants.SwerveConstants.maxSpeed);
+// }
+
 public double getDriveForwardAxis() {
-return -forwardRateLimiter.calculate(
-      square(deadband(driveController.getRightYAxis().getRaw(), 0.05)) * Constants.SwerveConstants.maxSpeed);
+      return square(deadband(driveController.getLeftYAxis().getRaw(), 0.05) * Constants.SwerveConstants.maxSpeed);
 }
 
+// public double getDriveStrafeAxis() {
+// return -strafeRateLimiter.calculate(
+//       square(deadband(driveController.getLeftXAxis().getRaw(), 0.05)) * Constants.SwerveConstants.maxSpeed);
+// }
+
 public double getDriveStrafeAxis() {
-return -strafeRateLimiter.calculate(
-      square(deadband(driveController.getRightXAxis().getRaw(), 0.05)) * Constants.SwerveConstants.maxSpeed);
+      return square(deadband(driveController.getLeftXAxis().getRaw(), .05) * Constants.SwerveConstants.maxSpeed);
 }
 
 public double getDriveRotationAxis() {
-return -square(deadband(driveController.getLeftXAxis().getRaw(), 0.05))
+return -square(deadband(driveController.getRightXAxis().getRaw(), 0.05))
       * Constants.SwerveConstants.maxAngularVelocity
       * 0.75;
 }

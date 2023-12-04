@@ -446,7 +446,7 @@ public final class Constants {
       public static final boolean driveEnableCurrentLimit = true;
 
       /* Angle Motor PID Values */
-      public static final double angleKP = 200;
+      public static final double angleKP = 0.1;
       public static final double angleKI = 0.0;
       public static final double angleKD = 0.0;
 
@@ -473,7 +473,7 @@ public final class Constants {
       public static final double angleKA = (0.003 / 12);
 
       /* Swerve Profiling Values */
-      public static final double maxSpeed = 6.52; // meters per second
+      public static final double maxSpeed = 3; //6.52; // meters per second
       public static final double maxAcceleration =
               (stallTorque * driveGearRatio * 4) / (wheelDiameter * robotMass); // 16.52; // meters per second^2
       public static final double maxAngularVelocity = maxSpeed // rad/s
@@ -497,7 +497,7 @@ public final class Constants {
       public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
 
       /* Drive Motor Inverts */
-      public static final boolean driveMotorInvert = true;
+      public static final boolean driveMotorInvert = false;
 
       /* Drive Encoder Inverts */
       public static final boolean driveEncoderInvert = false;

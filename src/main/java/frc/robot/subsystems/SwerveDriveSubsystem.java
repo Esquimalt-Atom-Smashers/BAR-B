@@ -82,7 +82,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     public void resetLastMinimumXValue() {minimumXValue = Double.MAX_VALUE;}
 
     // Max Speed Supplier
-
     private DoubleSupplier maxSpeedSupplier = () -> Constants.SwerveConstants.maxSpeed;
 
     public SwerveDriveSubsystem() {
@@ -98,13 +97,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         // Reset each module using its absolute encoder to avoid having modules fail to align
         calibrateIntegratedEncoders();
 
-        // Add all motors to orchestra lol
-        //TO DO: Translate This
-        // for (SwerveModule module : modules) {
-        //     RobotContainer.orchestra.addInstrument(module.getDriveMotor());
-        //     RobotContainer.orchestra.addInstrument(module.getAngleMotor());
-        // }
-
         // Initialize the swerve drive pose estimator with access to the module positions.
         swervePoseEstimator = new SwerveDrivePoseEstimator(
                 SwerveConstants.swerveKinematics,
@@ -118,25 +110,26 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     public Command driveCommand(
             DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier rotation, boolean isFieldOriented) {
         return run(() -> {
+            System.out.println("Rotation Supplier: " + rotation.getAsDouble());
             setVelocity(
                     new ChassisSpeeds(forward.getAsDouble(), strafe.getAsDouble(), rotation.getAsDouble()),
                     isFieldOriented);
         });
     }
 
-    public Command preciseDriveCommand(
-            DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier rotation, boolean isFieldOriented) {
-        var speedMultiplier = SwerveConstants.preciseDrivingModeSpeedMultiplier;
+    // public Command preciseDriveCommand(
+    //         DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier rotation, boolean isFieldOriented) {
+    //     var speedMultiplier = SwerveConstants.preciseDrivingModeSpeedMultiplier;
 
-        return run(() -> {
-            setVelocity(
-                    new ChassisSpeeds(
-                            speedMultiplier * forward.getAsDouble(),
-                            speedMultiplier * strafe.getAsDouble(),
-                            speedMultiplier * rotation.getAsDouble()),
-                    isFieldOriented);
-        });
-    }
+    //     return run(() -> {
+    //         setVelocity(
+    //                 new ChassisSpeeds(
+    //                         speedMultiplier * forward.getAsDouble(),
+    //                         speedMultiplier * strafe.getAsDouble(),
+    //                         speedMultiplier * rotation.getAsDouble()),
+    //                 isFieldOriented);
+    //     });
+    // }
 
     public Command cardinalCommand(Rotation2d targetAngle, DoubleSupplier forward, DoubleSupplier strafe) {
         omegaController.enableContinuousInput(-Math.PI, Math.PI);
@@ -171,72 +164,72 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     //             .withName("Orchestra");
     // }
 
-    private class AnyContainer<T> {
-        public T thing;
+    // private class AnyContainer<T> {
+    //     public T thing;
 
-        public AnyContainer(T thing) {
-            this.thing = thing;
-        }
-    }
+    //     public AnyContainer(T thing) {
+    //         this.thing = thing;
+    //     }
+    // }
 
-    public Command levelChargeStationCommandDestiny() {
-        Timer myFavoriteTimer = new Timer();
-        AnyContainer<Double> sketchyBoi = new AnyContainer<Double>(0.5);
-        AnyContainer<Boolean> isGoingSlower = new AnyContainer<Boolean>(false);
-        return run(() -> {
-                    double tilt = getTiltAmountInDegrees();
+    // public Command levelChargeStationCommandDestiny() {
+    //     Timer myFavoriteTimer = new Timer();
+    //     AnyContainer<Double> sketchyBoi = new AnyContainer<Double>(0.5);
+    //     AnyContainer<Boolean> isGoingSlower = new AnyContainer<Boolean>(false);
+    //     return run(() -> {
+    //                 double tilt = getTiltAmountInDegrees();
 
-                    // Negative pitch -> drive forward, Positive pitch -> drive backward
+    //                 // Negative pitch -> drive forward, Positive pitch -> drive backward
 
-                    Translation2d direction = new Translation2d(
-                            1,
-                            new Rotation2d(
-                                    getNormalVector3d().getX(),
-                                    getNormalVector3d().getY()));
+    //                 Translation2d direction = new Translation2d(
+    //                         1,
+    //                         new Rotation2d(
+    //                                 getNormalVector3d().getX(),
+    //                                 getNormalVector3d().getY()));
 
-                    double speed = tiltController.calculate(tilt, 0);
-                    if (speed >= levelingMaxSpeed) speed = levelingMaxSpeed;
+    //                 double speed = tiltController.calculate(tilt, 0);
+    //                 if (speed >= levelingMaxSpeed) speed = levelingMaxSpeed;
 
-                    speed *= (isGoingSlower.thing ? 0.5 : 1);
+    //                 speed *= (isGoingSlower.thing ? 0.5 : 1);
 
-                    Translation2d finalDirection = direction.times(speed);
+    //                 Translation2d finalDirection = direction.times(speed);
 
-                    ChassisSpeeds velocity = new ChassisSpeeds(finalDirection.getX(), finalDirection.getY(), 0);
-                    // if (tiltController.atSetpoint()) myFavoriteTimer.restart();
+    //                 ChassisSpeeds velocity = new ChassisSpeeds(finalDirection.getX(), finalDirection.getY(), 0);
+    //                 // if (tiltController.atSetpoint()) myFavoriteTimer.restart();
 
-                    sketchyBoi.thing -= 0.02;
+    //                 sketchyBoi.thing -= 0.02;
 
-                    if (tiltController.atSetpoint()
-                            || Math.abs(getTiltRate()) >= Math.toDegrees(angleRateThresholdReceiver)) {
-                        sketchyBoi.thing = 0.5;
-                        isGoingSlower.thing = true;
-                    }
+    //                 if (tiltController.atSetpoint()
+    //                         || Math.abs(getTiltRate()) >= Math.toDegrees(angleRateThresholdReceiver)) {
+    //                     sketchyBoi.thing = 0.5;
+    //                     isGoingSlower.thing = true;
+    //                 }
 
-                    if (sketchyBoi.thing > 0) {
-                        myFavoriteTimer.start();
-                        lock();
-                        // LightsSubsystem.LEDSegment.MainStrip.setRainbowAnimation(1);
-                    } else {
-                        setVelocity(velocity, false);
-                        myFavoriteTimer.stop();
-                    }
-                })
-                .beforeStarting(() -> {
-                    isGoingSlower.thing = false;
-                    myFavoriteTimer.reset();
-                    isLevelingAuto = true;
-                    sketchyBoi.thing = 0.0;
-                    var values = pidValueReciever;
-                    if (values.length < 5) return;
-                    tiltController.setPID(values[0], values[1], values[2]);
-                    tiltController.setTolerance(values[3]);
-                    levelingMaxSpeed = values[4];
-                })
-                .finallyDo((interrupted) -> {
-                    tiltController.reset();
-                    isLevelingAuto = false;
-                });
-    }
+    //                 if (sketchyBoi.thing > 0) {
+    //                     myFavoriteTimer.start();
+    //                     lock();
+    //                     // LightsSubsystem.LEDSegment.MainStrip.setRainbowAnimation(1);
+    //                 } else {
+    //                     setVelocity(velocity, false);
+    //                     myFavoriteTimer.stop();
+    //                 }
+    //             })
+    //             .beforeStarting(() -> {
+    //                 isGoingSlower.thing = false;
+    //                 myFavoriteTimer.reset();
+    //                 isLevelingAuto = true;
+    //                 sketchyBoi.thing = 0.0;
+    //                 var values = pidValueReciever;
+    //                 if (values.length < 5) return;
+    //                 tiltController.setPID(values[0], values[1], values[2]);
+    //                 tiltController.setTolerance(values[3]);
+    //                 levelingMaxSpeed = values[4];
+    //             })
+    //             .finallyDo((interrupted) -> {
+    //                 tiltController.reset();
+    //                 isLevelingAuto = false;
+    //             });
+    // }
 
     public boolean isLevelDestiny() {
         return tiltController.atSetpoint() && isLevelingAuto;
