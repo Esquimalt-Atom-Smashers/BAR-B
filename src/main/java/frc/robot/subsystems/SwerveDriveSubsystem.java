@@ -141,9 +141,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         driveSignal = new SwerveDriveSignal();
     }
 
-    public void lock() {
-        driveSignal = new SwerveDriveSignal(true);
-    }
+    // public void lock() {
+    //     driveSignal = new SwerveDriveSignal(true);
+    // }
 
     public void update() {
         updateOdometry();
@@ -209,6 +209,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        System.out.println("GYRO OUTPUT: " + gyro.getRotation2d().getDegrees());
         update();
     }
 

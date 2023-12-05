@@ -33,8 +33,10 @@ public class RobotContainer {
 
     private void configureBindings() {
     /* Set default commands */
+        // swerveDriveSubsystem.setDefaultCommand(swerveDriveSubsystem.driveCommand(
+        //     this::getDriveForwardAxis, this::getDriveStrafeAxis, this::getDriveRotationAxis, true));
         swerveDriveSubsystem.setDefaultCommand(swerveDriveSubsystem.driveCommand(
-            this::getDriveForwardAxis, this::getDriveStrafeAxis, this::getDriveRotationAxis, true));
+            () -> driveController.getLeftYAxis().getRaw(), () -> driveController.getLeftXAxis().getRaw(), () -> driveController.getRightXAxis().getRaw(), true));
     }
 
     public double getDriveForwardAxis() {

@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.VoltageOut;
+import com.ctre.phoenix6.hardware.TalonFX;
+
 /**
  * This code was adapted from https://github.com/FRC2539/javabot-2023/
  * In order for this project to run, you need to do the following: 
@@ -54,6 +58,10 @@ public class Robot extends TimedRobot {
    * <p>This runs after the mode specific periodic functions, but before LiveWindow and
    * SmartDashboard integrated updating.
    */
+
+  //  TalonFX turnMotor = new TalonFX(0);
+  //  DutyCycleOut out = new DutyCycleOut(0.2);
+
   @Override
   public void robotPeriodic() {
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
@@ -61,6 +69,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    // turnMotor.setControl(out);
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
