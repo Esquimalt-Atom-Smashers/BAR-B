@@ -103,7 +103,7 @@ public final class Constants {
       public static final boolean driveEnableCurrentLimit = true;
 
       /* Angle Motor PID Values */
-      public static final double angleKP = 0.1;
+      public static final double angleKP = 0.6;
       public static final double angleKI = 0.0;
       public static final double angleKD = 0.0;
 
@@ -133,11 +133,11 @@ public final class Constants {
       public static final double maxSpeed = 6.52; // meters per second
       public static final double maxAcceleration =
               (stallTorque * driveGearRatio * 4) / (wheelDiameter * robotMass); // 16.52; // meters per second^2
-      public static final double maxAngularVelocity = maxSpeed // rad/s
-              / Arrays.stream(moduleTranslations)
-                      .map(translation -> translation.getNorm())
-                      .max(Double::compare)
-                      .get();
+      public static final double maxAngularVelocity = 5; // rad/s
+        //       / Arrays.stream(moduleTranslations)
+        //               .map(translation -> translation.getNorm())
+        //               .max(Double::compare)
+        //               .get();
 
       /* Calculated Characterization Values */
       public static final double calculatedDriveKS = 0;
@@ -163,7 +163,7 @@ public final class Constants {
       public static final boolean angleMotorInvert = false;
 
       /* Angle Encoder Invert */
-      public static final SensorDirectionValue canCoderInvert = SensorDirectionValue.CounterClockwise_Positive;
+      public static final SensorDirectionValue canCoderInvert = SensorDirectionValue.Clockwise_Positive;
 
       /* Module Specific Constants */
       // Note, bevel gears should face left (relative to back-to-front)

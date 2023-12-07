@@ -125,7 +125,7 @@ public class SwerveModule {
             driveMotor.setControl(
                     velocityVoltageRequestDrive.withVelocity(velocity).withFeedForward(driveFeedforward.calculate(desiredState.speedMetersPerSecond)));
         }
-
+        System.out.println("Absolute position: " + angleEncoder.getAbsolutePosition());
         // Determine the angle to set the module to
         double angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.SwerveConstants.maxSpeed * 0.01))
                 ? lastAngle
