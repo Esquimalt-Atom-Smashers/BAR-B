@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -9,33 +8,36 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.gyro.NavXGyro;
-import frc.lib.interpolation.MovingAverageVelocity;
-import frc.lib.math.MathUtils;
 import frc.lib.swerve.SwerveDriveSignal;
 import frc.lib.swerve.SwerveModule;
 import frc.robot.Constants;
-import frc.robot.Constants.SwerveConstants;
 import java.util.function.DoubleSupplier;
 import frc.lib.swerve.SwerveModuleConstants;
 
 public class SwerveDriveSubsystem extends SubsystemBase {
+    /** The current pose of the robot. */
     private Pose2d pose = new Pose2d();
-    private final MovingAverageVelocity velocityEstimator = new MovingAverageVelocity(3);
+
+    /** The current velocity and previous velocity of the robot. */
     private ChassisSpeeds velocity = new ChassisSpeeds();
     private ChassisSpeeds previousVelocity = new ChassisSpeeds();
+
     private SwerveDriveSignal driveSignal = new SwerveDriveSignal();
 
+    /** Array of the swerve modules on the robot */
     private SwerveModule[] modules;
 
     private NavXGyro gyro;
 
-    boolean isCharacterizing = false;
-
-    // Max Speed Supplier
+    /** Max speed supplier. */
     private DoubleSupplier maxSpeedSupplier = () -> Constants.SwerveConstants.maxSpeed;
 
+    /**
+     * Constructs a SwerveDriveSubsystem object.
+     * Initializes the gyro, modules, and any autonmous variables.
+     */
     public SwerveDriveSubsystem() {
-        gyro = new NavXGyro();
+        gyro = new NavXGyro(); 
 
         modules = new SwerveModule[] {
             new SwerveModule(0, Constants.SwerveConstants.Mod0.constants),
@@ -45,6 +47,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         };
     }
 
+    /** 
+     * Command used for driving during tele-operated mode.
+     * 
+     * @param forward The forwards velocity in meters/second.
+     * @param strafe The strafe velocity in meters/second.
+     * @param rotation The rotation velocity in radians/second.
+     * @param isFieldOriented The driving orientation of the robot.
+     * 
+     * @return A command object.
+     */
     public Command driveCommand(
             DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier rotation, boolean isFieldOriented) {
         return run(() -> {
@@ -54,35 +66,27 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         });
     }
 
-    public Command preciseDriveCommand(
-            DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier rotation, boolean isFieldOriented) {
-        var speedMultiplier = SwerveConstants.preciseDrivingModeSpeedMultiplier;
-
-        return run(() -> {
-            setVelocity(
-                    new ChassisSpeeds(
-                            speedMultiplier * forward.getAsDouble(),
-                            speedMultiplier * strafe.getAsDouble(),
-                            speedMultiplier * rotation.getAsDouble()),
-                    isFieldOriented);
-        });
-    }
-
+    /**
+     * Sets a custom max speed multipler.
+     * Very useful if we need to go slower or faster in specific scenarios.
+     * 
+     * @param maxSpeedSupplier The speed supplier in meters/second. 
+     */
     public void setCustomMaxSpeedSupplier(DoubleSupplier maxSpeedSupplier) {
         this.maxSpeedSupplier = maxSpeedSupplier;
     }
 
+    /** @return The pose of the robot. */
     public Pose2d getPose() {
         return pose;
     }
 
-    /**
-     * @return The robot relative velocity of the drivetrain
-     */
+    /** @return The robot relative velocity of the drivetrain. */
     public ChassisSpeeds getVelocity() {
         return velocity;
     }
 
+    /** @return The relative acceleration of the drivetrain. */
     public ChassisSpeeds getAcceleration() {
         return new ChassisSpeeds(
                 velocity.vxMetersPerSecond - previousVelocity.vxMetersPerSecond,
@@ -90,13 +94,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
                 velocity.omegaRadiansPerSecond - previousVelocity.omegaRadiansPerSecond);
     }
 
-    /**
-     * @return The potentially field relative desired velocity of the drivetrain
-     */
+    /** @return The potentially field relative desired velocity of the drivetrain */
     public ChassisSpeeds getDesiredVelocity() {
         return (ChassisSpeeds) driveSignal;
     }
 
+    /** @return The magnitude of the velocity on the robot. */
     public double getVelocityMagnitude() {
         return Math.sqrt(Math.pow(velocity.vxMetersPerSecond, 2) + Math.pow(velocity.vyMetersPerSecond, 2));
     }
@@ -105,18 +108,17 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return (new Translation2d(velocity.vxMetersPerSecond, velocity.vxMetersPerSecond)).getAngle();
     }
 
-    public ChassisSpeeds getSmoothedVelocity() {
-        return velocityEstimator.getAverage();
-    }
-
+    /** @return The Rotation2d of the gyro. */
     public Rotation2d getGyroRotation() {
         return gyro.getRotation2d();
     }
 
+    /** @return the Rotation2d of the robots pose. */
     public Rotation2d getRotation() {
         return pose.getRotation();
     }
 
+    /** @return The Rotation3d of the gyro. */
     public Rotation3d getGyroRotation3d() {
         return gyro.getRotation3d();
     }
@@ -125,6 +127,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return new Translation3d(0, 0, 1).rotateBy(getGyroRotation3d());
     }
 
+    /**
+     * Instantializes the driveSignal based on the given parameters.
+     *
+     * @param velocity The velocity of the robot in ChassisSpeeds. 
+     * @param isFieldOriented true if it is field oriented, otherwise false.
+     * @param isOpenLoop true if it is field oriented, otherwise false. 
+    */
     public void setVelocity(ChassisSpeeds velocity, boolean isFieldOriented, boolean isOpenLoop) {
         driveSignal = new SwerveDriveSignal(velocity, isFieldOriented, isOpenLoop);
     }
@@ -141,14 +150,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         driveSignal = new SwerveDriveSignal();
     }
 
-    // public void lock() {
-    //     driveSignal = new SwerveDriveSignal(true);
-    // }
-
     public void update() {
         updateOdometry();
-
-        if (isCharacterizing) return;
 
         updateModules(driveSignal);
     }
@@ -176,21 +179,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         SwerveModuleState[] moduleStates =
                 Constants.SwerveConstants.swerveKinematics.toSwerveModuleStates(chassisVelocity);
 
-        if (driveSignal.isLocked()) {
-            moduleStates = new SwerveModuleState[] {
-                new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-                new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
-                new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
-                new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-            };
-
-            // Set the angle of each module only
-            for (int i = 0; i < moduleStates.length; i++) {
-                modules[i].setDesiredAngleOnly(moduleStates[i].angle, true);
-            }
-        } else {
-            setModuleStates(moduleStates, isDriveSignalStopped(driveSignal) ? true : driveSignal.isOpenLoop());
-        }
+        setModuleStates(moduleStates, isDriveSignalStopped(driveSignal) ? true : driveSignal.isOpenLoop());
     }
 
     private void setModuleStates(SwerveModuleState[] desiredStates, boolean isOpenLoop) {
@@ -209,7 +198,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println("GYRO OUTPUT: " + gyro.getRotation2d().getDegrees());
         update();
     }
 
@@ -229,3 +217,4 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return positions;
     }
 }
+
