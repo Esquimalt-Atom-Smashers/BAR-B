@@ -138,10 +138,17 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         driveSignal = new SwerveDriveSignal(velocity, isFieldOriented, isOpenLoop);
     }
 
+    /**
+     * Instantiatesz the driveSignal based on the given parameters.
+     * 
+     * @param velocity The velocity of the robot in ChassisSpeeds. 
+     * @param isFieldOriented true if it is field oriented, otherwise false.
+    */
     public void setVelocity(ChassisSpeeds velocity, boolean isFieldOriented) {
         setVelocity(velocity, isFieldOriented, true);
     }
 
+    /** */
     public void setVelocity(ChassisSpeeds velocity) {
         setVelocity(velocity, false);
     }

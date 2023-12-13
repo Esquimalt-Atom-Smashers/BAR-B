@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 
 public class NavXGyro {
     private AHRS navX = new AHRS(SerialPort.Port.kUSB1);
-
+    
     public NavXGyro() {}
 
     public Rotation2d getRotation2d() {
@@ -21,5 +21,9 @@ public class NavXGyro {
 
     public Rotation3d getRotationRates3d() {
         return new Rotation3d(navX.getRawGyroX(), navX.getRawGyroY(), navX.getRawGyroZ());
+    }
+    
+    public void reset() {
+        navX.reset();
     }
 }

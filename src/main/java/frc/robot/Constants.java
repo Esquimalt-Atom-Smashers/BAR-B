@@ -103,7 +103,7 @@ public final class Constants {
       public static final boolean driveEnableCurrentLimit = true;
 
       /* Angle Motor PID Values */
-      public static final double angleKP = 0.6;
+      public static final double angleKP = 43;
       public static final double angleKI = 0.0;
       public static final double angleKD = 0.0;
 
@@ -130,7 +130,7 @@ public final class Constants {
       public static final double angleKA = (0.003 / 12);
 
       /* Swerve Profiling Values */
-      public static final double maxSpeed = 6.52; // meters per second
+      public static final double maxSpeed = 5.00; // (6.52) meters per second
       public static final double maxAcceleration =
               (stallTorque * driveGearRatio * 4) / (wheelDiameter * robotMass); // 16.52; // meters per second^2
       public static final double maxAngularVelocity = 5; // rad/s
@@ -150,20 +150,20 @@ public final class Constants {
       public static final double preciseDrivingModeSpeedMultiplier = 0.2;
 
       /* Neutral Modes */
-      public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Brake;
+      public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
       public static final NeutralModeValue driveNeutralMode = NeutralModeValue.Brake;
 
       /* Drive Motor Inverts */
-      public static final boolean driveMotorInvert = true;
+      public static final boolean driveMotorInvert = false;
 
       /* Drive Encoder Inverts */
       public static final boolean driveEncoderInvert = false;
 
       /* Angle Motor Inverts */
-      public static final boolean angleMotorInvert = false;
+      public static final boolean angleMotorInvert = true;
 
       /* Angle Encoder Invert */
-      public static final SensorDirectionValue canCoderInvert = SensorDirectionValue.Clockwise_Positive;
+      public static final SensorDirectionValue canCoderInvert = SensorDirectionValue.CounterClockwise_Positive;
 
       /* Module Specific Constants */
       // Note, bevel gears should face left (relative to back-to-front)
@@ -173,7 +173,7 @@ public final class Constants {
           public static final int driveMotorID = 1;
           public static final int angleMotorID = 0;
           public static final int canCoderID = 0;
-          public static final double angleOffset = .1582 * 360; 
+          public static final double angleOffset = (.1582 * 360) - 45 + 180; 
           //public static final String canivoreName = "CANivore";
           public static final SwerveModuleConstants constants =
                   new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
@@ -185,7 +185,7 @@ public final class Constants {
           public static final int driveMotorID = 5;
           public static final int angleMotorID = 4;
           public static final int canCoderID = 2;
-          public static final double angleOffset = .9797 * 360;
+          public static final double angleOffset = (.9797 * 360) - 90 + 180;
           //public static final String canivoreName = "CANivore";
           public static final SwerveModuleConstants constants =
                   new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
@@ -196,7 +196,7 @@ public final class Constants {
           public static final int driveMotorID = 3;
           public static final int angleMotorID = 2;
           public static final int canCoderID = 1;
-          public static final double angleOffset = .6382 * 360;
+          public static final double angleOffset = (.6382 * 360) - 90;
           //public static final String canivoreName = "CANivore";
           public static final SwerveModuleConstants constants =
                   new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
@@ -207,7 +207,7 @@ public final class Constants {
           public static final int driveMotorID = 7;
           public static final int angleMotorID = 6;
           public static final int canCoderID = 3;
-          public static final double angleOffset = .667 * 360;
+          public static final double angleOffset = (.667 * 360) - 45;
           //public static final String canivoreName = "CANivore";
           public static final SwerveModuleConstants constants =
                   new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
