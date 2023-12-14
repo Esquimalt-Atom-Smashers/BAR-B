@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.lib.controller.LogitechController;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.BlinkinSubsystem.BlinkinValue;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -30,23 +31,23 @@ public class RobotContainer {
     public static SlewRateLimiter strafeRateLimiter = new SlewRateLimiter(40, -40, 0);
 
     private final SwerveDriveSubsystem swerveDriveSubsystem = new SwerveDriveSubsystem();
-    private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+    // private final LimelightSubsystem limelightSubsystem = new
+    // LimelightSubsystem();
+    // private final BlinkinSubsystem blinkinSubsystem = new BlinkinSubsystem();
 
     public RobotContainer(TimedRobot robot) {
         configureBindings();
     }
 
     private void configureBindings() {
-        /* Set default commands */
-        // swerveDriveSubsystem.setDefaultCommand(swerveDriveSubsystem.driveCommand(
-        // this::getDriveForwardAxis, this::getDriveStrafeAxis,
-        // this::getDriveRotationAxis, true));
         swerveDriveSubsystem.setDefaultCommand(swerveDriveSubsystem.driveCommand(
-                () -> getDriveForwardAxis(), () -> getDriveStrafeAxis(),
-                () -> getDriveRotationAxis(), true));
+                this::getDriveForwardAxis, this::getDriveStrafeAxis,
+                this::getDriveRotationAxis, true));
 
-        driveController.getA().whileTrue(
-                swerveDriveSubsystem.rotateCenterApriltagCommand(() -> 0.05, limelightSubsystem.getAprilTagXOffset()));
+        // driveController.getA().whileTrue(
+        // swerveDriveSubsystem.rotateCenterApriltagCommand(() -> 0.05,
+        // limelightSubsystem.getAprilTagXOffset()));
+        // driveController.getB().onTrue(blinkinSubsystem.updateColour(BlinkinValue.CONFETTI));
     }
 
     public double getDriveForwardAxis() {
