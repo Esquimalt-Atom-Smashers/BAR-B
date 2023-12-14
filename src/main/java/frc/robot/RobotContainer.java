@@ -42,8 +42,8 @@ public class RobotContainer {
         // this::getDriveForwardAxis, this::getDriveStrafeAxis,
         // this::getDriveRotationAxis, true));
         swerveDriveSubsystem.setDefaultCommand(swerveDriveSubsystem.driveCommand(
-                () -> driveController.getLeftYAxis().getRaw(), () -> driveController.getLeftXAxis().getRaw(),
-                () -> driveController.getRightXAxis().getRaw(), true));
+                () -> getDriveForwardAxis(), () -> getDriveStrafeAxis(),
+                () -> getDriveRotationAxis(), true));
 
         driveController.getA().whileTrue(
                 swerveDriveSubsystem.rotateCenterApriltagCommand(() -> 0.05, limelightSubsystem.getAprilTagXOffset()));
@@ -51,16 +51,17 @@ public class RobotContainer {
 
     public double getDriveForwardAxis() {
         return -forwardRateLimiter.calculate(
-                square(deadband(driveController.getRightYAxis().getRaw(), 0.05)) * Constants.SwerveConstants.maxSpeed);
+                square(deadband(driveController.getLeftYAxis().getRaw(), 0.05)) * Constants.SwerveConstants.maxSpeed);
     }
 
     public double getDriveStrafeAxis() {
         return -strafeRateLimiter.calculate(
-                square(deadband(driveController.getRightXAxis().getRaw(), 0.05)) * Constants.SwerveConstants.maxSpeed);
+                square(deadband(driveController.getLeftXAxis().getRaw(), 0.05)) * Constants.SwerveConstants.maxSpeed
+                        * .50);
     }
 
     public double getDriveRotationAxis() {
-        return -square(deadband(driveController.getLeftXAxis().getRaw(), 0.05))
+        return -square(deadband(driveController.getRightXAxis().getRaw(), 0.05))
                 * Constants.SwerveConstants.maxAngularVelocity
                 * 0.75;
     }
