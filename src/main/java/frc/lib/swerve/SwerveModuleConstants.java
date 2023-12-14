@@ -9,11 +9,12 @@ public class SwerveModuleConstants {
     public final double angleOffset;
     public Optional<String> canivoreName = Optional.empty();
     public final static boolean isSecondOrder = true;
-    public final static double[] pidValueReciever = {0.8 / 15, 0, .01, 8, 0.9}; // P I D stopAngle leveingMaxSpeed;
+    public final static double[] pidValueReciever = { 0.8 / 15, 0, .01, 8, 0.9 }; // P I D stopAngle leveingMaxSpeed;
     public final static double angleRateThresholdReceiver = 18.0;
 
     /**
      * Swerve Module Constants to be used when creating swerve modules.
+     * 
      * @param driveMotorID
      * @param angleMotorID
      * @param canCoderID

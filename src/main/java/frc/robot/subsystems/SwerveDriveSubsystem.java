@@ -8,8 +8,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.gyro.NavXGyro;
-import frc.lib.interpolation.MovingAverageVelocity;
-import frc.lib.math.MathUtils;
 import frc.lib.swerve.SwerveDriveSignal;
 import frc.lib.swerve.SwerveModule;
 import frc.robot.Constants;
@@ -88,20 +86,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         });
     }
 
-    public Command preciseDriveCommand(
-            DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier rotation, boolean isFieldOriented) {
-        var speedMultiplier = Constants.SwerveConstants.preciseDrivingModeSpeedMultiplier;
-
-        return run(() -> {
-            setVelocity(
-                    new ChassisSpeeds(
-                            speedMultiplier * forward.getAsDouble(),
-                            speedMultiplier * strafe.getAsDouble(),
-                            speedMultiplier * rotation.getAsDouble()),
-                    isFieldOriented);
+    /** Command which gives the robot a little 'boost'. Use caution when calling. */
+    public Command nitrosDriveCommand() {
+        return runOnce(() -> {
+            setCustomMaxSpeedSupplier(() -> 6.0);
         });
     }
 
+    /** Sets the custom max speed(m/s) of the drivetrain. */
     public void setCustomMaxSpeedSupplier(DoubleSupplier maxSpeedSupplier) {
         this.maxSpeedSupplier = maxSpeedSupplier;
     }
@@ -134,6 +126,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return Math.sqrt(Math.pow(velocity.vxMetersPerSecond, 2) + Math.pow(velocity.vyMetersPerSecond, 2));
     }
 
+    /** @return The rotation velocity of the robot. */
     public Rotation2d getVelocityRotation() {
         return (new Translation2d(velocity.vxMetersPerSecond, velocity.vxMetersPerSecond)).getAngle();
     }
@@ -158,7 +151,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     /**
-     * Instantializes the driveSignal based on the given parameters.
+     * Instantiates the driveSignal based on the given parameters.
      *
      * @param velocity        The velocity of the robot in ChassisSpeeds.
      * @param isFieldOriented true if it is field oriented, otherwise false.
@@ -169,7 +162,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     /**
-     * Instantiatesz the driveSignal based on the given parameters.
+     * Instantiates the driveSignal based on the given parameters.
      * 
      * @param velocity        The velocity of the robot in ChassisSpeeds.
      * @param isFieldOriented true if it is field oriented, otherwise false.
@@ -178,21 +171,31 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         setVelocity(velocity, isFieldOriented, true);
     }
 
-    /** */
+    /**
+     * Instantiates the driveSignal based on the given parameters.
+     * 
+     * @param velocity The velocity of the robot in ChassisSpeeds.
+     */
     public void setVelocity(ChassisSpeeds velocity) {
         setVelocity(velocity, false);
     }
 
+    /** Stops all drive movement of the robot. */
     public void stop() {
         driveSignal = new SwerveDriveSignal();
     }
 
+    /**
+     * Called every frame (approx, 30ms), this is where the odometry and the modules
+     * are updated.
+     */
     public void update() {
         updateOdometry();
 
         updateModules(driveSignal);
     }
 
+    /** Updates the current robot odometry. */
     private void updateOdometry() {
         SwerveModuleState[] moduleStates = getModuleStates();
 
@@ -200,6 +203,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         velocity = Constants.SwerveConstants.swerveKinematics.toChassisSpeeds(moduleStates);
     }
 
+    /** Updates the modules based on the given driveSignal. */
     private void updateModules(SwerveDriveSignal driveSignal) {
         ChassisSpeeds chassisVelocity;
 
@@ -219,6 +223,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         setModuleStates(moduleStates, isDriveSignalStopped(driveSignal) ? true : driveSignal.isOpenLoop());
     }
 
+    /** Sets all the states of the swerve modules. */
     private void setModuleStates(SwerveModuleState[] desiredStates, boolean isOpenLoop) {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, maxSpeedSupplier.getAsDouble());
 
@@ -227,6 +232,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         }
     }
 
+    /** @return true if the driveSignal is stopped, false otherwise. */
     private boolean isDriveSignalStopped(SwerveDriveSignal driveSignal) {
         return driveSignal.vxMetersPerSecond == 0
                 && driveSignal.vyMetersPerSecond == 0
@@ -238,6 +244,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         update();
     }
 
+    /** @return the current states of all the swerve modules. */
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
         for (SwerveModule module : modules) {
@@ -246,6 +253,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return states;
     }
 
+    /** @return the current positions of all the swerve modules. */
     public SwerveModulePosition[] getModulePositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
         for (SwerveModule module : modules) {

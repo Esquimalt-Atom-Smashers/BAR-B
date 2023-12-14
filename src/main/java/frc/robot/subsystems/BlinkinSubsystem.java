@@ -7,6 +7,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class BlinkinSubsystem extends SubsystemBase {
+    /**
+     * The port the blinkin is plugged into. We use the Spark class because the
+     * range of pwm values are the same.
+     */
     private final Spark blinkin = new Spark(-1);
 
     public BlinkinSubsystem() {

@@ -33,22 +33,27 @@ public class LimelightSubsystem extends SubsystemBase {
         });
     }
 
+    /** @return the horizontal offset of the detected april-tag. */
     public double getAprilTagXOffset() {
         return aprilTagXOffset;
     }
 
+    /** @return the vertical offset of the detected april-tag. */
     public double getAprilTagYOffset() {
         return aprilTagYOffset;
     }
 
+    /** @return the primary id of the detected april-tag */
     public double getPrimaryAprilTagId() {
         return aprilTagId[0];
     }
 
+    /** @return true if the limelight sees a target, false otherwise. */
     public boolean hasTarget() {
         return validTarget;
     }
 
+    /** Retrieves the new entry data every frame iteration. */
     @Override
     public void periodic() {
         validTarget = (table.getEntry("tv").getDouble(0) == 1) ? true : false;
