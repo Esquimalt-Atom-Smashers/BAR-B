@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.gyro.NavXGyro;
 import frc.lib.interpolation.MovingAverageVelocity;
-import frc.lib.math.MathUtils;
 import frc.lib.swerve.SwerveDriveSignal;
 import frc.lib.swerve.SwerveModule;
 import frc.robot.Constants;
@@ -29,8 +28,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     private NavXGyro gyro;
 
-    boolean isCharacterizing = false;
-
     // Max Speed Supplier
     private DoubleSupplier maxSpeedSupplier = () -> Constants.SwerveConstants.maxSpeed;
 
@@ -38,10 +35,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         gyro = new NavXGyro();
 
         modules = new SwerveModule[] {
-            new SwerveModule(0, Constants.SwerveConstants.Mod0.constants),
-            new SwerveModule(1, Constants.SwerveConstants.Mod1.constants),
-            new SwerveModule(2, Constants.SwerveConstants.Mod2.constants),
-            new SwerveModule(3, Constants.SwerveConstants.Mod3.constants)
+                new SwerveModule(0, Constants.SwerveConstants.Mod0.constants),
+                new SwerveModule(1, Constants.SwerveConstants.Mod1.constants),
+                new SwerveModule(2, Constants.SwerveConstants.Mod2.constants),
+                new SwerveModule(3, Constants.SwerveConstants.Mod3.constants)
         };
     }
 
@@ -51,6 +48,26 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             setVelocity(
                     new ChassisSpeeds(forward.getAsDouble(), strafe.getAsDouble(), rotation.getAsDouble()),
                     isFieldOriented);
+        });
+    }
+
+    /**
+     * Command which 'should' make the robot try and rotate to center with an
+     * apriltag.
+     */
+    public Command rotateCenterApriltagCommand(DoubleSupplier min_rotation, double tx) {
+        double Kp = 0.1;
+        return run(() -> {
+            double headingError = -tx;
+            double steeringAdjust = 0;
+
+            if (Math.abs(headingError) > 1) {
+                if (headingError < 0)
+                    steeringAdjust = Kp * headingError + min_rotation.getAsDouble();
+                else
+                    steeringAdjust = Kp * headingError - min_rotation.getAsDouble();
+            }
+            this.setVelocity(new ChassisSpeeds(0, 0, steeringAdjust), true);
         });
     }
 
@@ -141,14 +158,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         driveSignal = new SwerveDriveSignal();
     }
 
-    // public void lock() {
-    //     driveSignal = new SwerveDriveSignal(true);
-    // }
-
     public void update() {
         updateOdometry();
-
-        if (isCharacterizing) return;
 
         updateModules(driveSignal);
     }
@@ -173,15 +184,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             chassisVelocity = (ChassisSpeeds) driveSignal;
         }
 
-        SwerveModuleState[] moduleStates =
-                Constants.SwerveConstants.swerveKinematics.toSwerveModuleStates(chassisVelocity);
+        SwerveModuleState[] moduleStates = Constants.SwerveConstants.swerveKinematics
+                .toSwerveModuleStates(chassisVelocity);
 
         if (driveSignal.isLocked()) {
             moduleStates = new SwerveModuleState[] {
-                new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-                new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
-                new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
-                new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+                    new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+                    new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
+                    new SwerveModuleState(0, Rotation2d.fromDegrees(-45)),
+                    new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
             };
 
             // Set the angle of each module only
@@ -209,7 +220,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println("GYRO OUTPUT: " + gyro.getRotation2d().getDegrees());
         update();
     }
 
