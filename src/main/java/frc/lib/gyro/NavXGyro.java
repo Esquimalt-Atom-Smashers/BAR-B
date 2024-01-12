@@ -7,6 +7,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SerialPort;
 
 public class NavXGyro {
+    // Test
     private AHRS navX = new AHRS(SerialPort.Port.kUSB1);
     
     public NavXGyro() {}
