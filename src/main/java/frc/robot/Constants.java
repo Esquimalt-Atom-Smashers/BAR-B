@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -60,11 +61,6 @@ public final class Constants {
   }
 
   public static class CompBotConstants {
-      // See https://github.com/Team364/BaseFalconSwerve for getting these values.
-
-      //public static final boolean hasPigeon = true;
-      //ublic static final int PIGEON_PORT = 29;
-
       public static final double lengthWithBumpers = Units.inchesToMeters(32 + 3.25 * 2);
       public static final double widthWithBumpers = Units.inchesToMeters(27.5 + 3.25 * 2);
 
@@ -213,4 +209,37 @@ public final class Constants {
                   new SwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
       }
   }
+
+    public static final class IntakeConstants {
+        /** Hardware ports */
+        public static final int INTAKE_MOTOR_PORT = -1;
+        public static final int ROTATION_MOTOR_PORT = -1;
+
+        public static final double INTAKE_LIMIT_SWITCH_PORT = -1;
+        public static final double ROTATION_LIMIT_SWITCH_PORT = -1;
+
+        /** Hardware behaviour constants */
+        public static final IdleMode INTAKE_IDLE_MODE = IdleMode.kBrake;
+        public static final IdleMode ROTATION_IDLE_MODE = IdleMode.kBrake;
+
+        public static final double INTAKE_VOLTAGE_COMPENSATION = 12.2;
+        public static final double ROTATION_VOLTAGE_COMPENSATION = 12.2;
+
+        public static final boolean INTAKE_MOTOR_INVERTED = false;
+        public static final boolean ROTATION_MOTOR_INVERTED = false;
+
+        /** PID Controller constants */ //TODO: determine values
+        public static final double INTAKE_CONTROLLER_KP = 6e-5; 
+        public static final double INTAKE_CONTROLLER_KI = 0; 
+        public static final double INTAKE_CONTROLLER_KD = 0; 
+        public static final double INTAKE_CONTROLLER_IZ = 0; 
+        public static final double INTAKE_CONTROLLER_FF = 1.5e-5; 
+
+        /** Velocity Constants */
+        public static final double INTAKE_MAX_RPM = 5000;
+        public static final double OUTTAKE_MAX_RPM = -2000;
+
+        public static final double INTAKE_RPM = 4000;
+        public static final double OUTTAKE_RPM = 3000;
+    }
 }
